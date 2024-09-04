@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId   Int     @id @default(autoincrement())
+  name     String
+  surname  String
+  email    String  @unique
+  password String
+  role     UserRole
+  orders   Order[]
+}
+
+model Pizza {
+  pizzaId     Int          @id @default(autoincrement())
+  name        String
+  orderPizzas OrderPizza[]
+}
+
+model Topping {
+  toppingId          Int                 @id @default(autoincrement())
+  name               String
+  price              Float
+  orderPizzaToppings OrderPizzaTopping[]
+}
+
+model Base {
+  baseId      Int          @id @default(autoincrement())
+  name        PizzaBase
+  orderPizzas OrderPizza[]
+}
+
+model Size {
+  sizeId      Int          @id @default(autoincrement())
+  name        PizzaSize
+  orderPizzas OrderPizza[]
+}
+
+model OrderPizza {
+  orderPizzaId       Int                 @id @default(autoincrement())
+  orderId            Int
+  pizzaId            Int
+  baseId             Int
+  sizeId             Int
+  quantity           Int
+  order              Order               @relation(fields: [orderId], references: [orderId])
+  pizza              Pizza               @relation(fields: [pizzaId], references: [pizzaId])
+  base               Base                @relation(fields: [baseId], references: [baseId])
+  size               Size                @relation(fields: [sizeId], references: [sizeId])
+  orderPizzaToppings OrderPizzaTopping[]
+}
+
+model Order {
+  orderId     Int          @id @default(autoincrement())
+  userId      Int
+  status      OrderStatus
+  total       Float
+  user        User         @relation(fields: [userId], references: [userId])
+  orderPizzas OrderPizza[]
+}
+
+model OrderPizzaTopping {
+  orderPizzaToppingId Int        @id @default(autoincrement())
+  orderPizzaId        Int
+  toppingId           Int
+  quantity            Int
+  orderPizza          OrderPizza @relation(fields: [orderPizzaId], references: [orderPizzaId])
+  topping             Topping    @relation(fields: [toppingId], references: [toppingId])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PizzaSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum PizzaBase {
+  THICK
+  THIN
+}
+
+enum OrderStatus {
+  NEW
+  IN_PROGRESS
+  READY
+}
