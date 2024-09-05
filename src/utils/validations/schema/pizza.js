@@ -6,6 +6,11 @@ export const pizzaSchema = Yup.object().shape({
     .max(20, "Name cannot be longer than 20 characters")
     .required("Name is required"),
 
+  description: Yup.string()
+    .min(3, "Description must be at least 3 characters long")
+    .max(30, "Description cannot be longer than 20 characters")
+    .required("Description is required"),
+
   prize: Yup.number()
     .positive("Prize must be a positive number")
     .required("Prize is required"),
