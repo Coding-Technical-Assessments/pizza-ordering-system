@@ -6,7 +6,7 @@ export const toppingSchema = Yup.object().shape({
     .max(20, "Name cannot be longer than 20 characters")
     .required("Name is required"),
 
-  prize: Yup.number()
-    .positive("Prize must be a positive number")
-    .required("Prize is required"),
+  price: Yup.number()
+    .positive("Price must be a positive number")
+    .required("Price is required"),
 });
