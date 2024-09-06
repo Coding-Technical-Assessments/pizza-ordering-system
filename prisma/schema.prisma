@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+model User {
+  userId   Int      @id @default(autoincrement())
+  name     String
+  surname  String
+  email    String   @unique
+  phone    String   @unique
+  password String
+  role     UserRole
+  orders   Order[]
+}
+
+model Pizza {
+  pizzaId     Int    @id @default(autoincrement())
+  name        String @unique
+  price       Float
+  image       String
+  description String
+
+  orderPizzas OrderPizza[]
+}
+
+model Topping {
+  toppingId Int    @id @default(autoincrement())
+  name      String @unique
+  price     Float
+
+  orderPizzaToppings OrderPizzaTopping[]
+}
+
+model Base {
+  baseId Int       @id @default(autoincrement())
+  name   PizzaBase @unique
+
+  orderPizzas OrderPizza[]
+}
+
+model Size {
+  sizeId Int       @id @default(autoincrement())
+  name   PizzaSize @unique
+  price  Float
+
+  orderPizzas OrderPizza[]
+}
+
+model OrderPizza {
+  orderPizzaId Int @id @default(autoincrement())
+  orderId      Int
+  pizzaId      Int
+  baseId       Int
+  sizeId       Int
+
+  quantity Int
+  base     Base  @relation(fields: [baseId], references: [baseId])
+  order    Order @relation(fields: [orderId], references: [orderId])
+  pizza    Pizza @relation(fields: [pizzaId], references: [pizzaId])
+  size     Size  @relation(fields: [sizeId], references: [sizeId])
+
+  orderPizzaToppings OrderPizzaTopping[]
+}
+
+model Order {
+  orderId     Int          @id @default(autoincrement())
+  userId      Int
+  status      OrderStatus
+  total       Float
+  user        User         @relation(fields: [userId], references: [userId])
+  orderPizzas OrderPizza[]
+
+  @@index([userId], map: "Order_userId_fkey")
+}
+
+model OrderPizzaTopping {
+  orderPizzaToppingId Int @id @default(autoincrement())
+  orderPizzaId        Int
+  toppingId           Int
+  quantity            Int
+
+  orderPizza OrderPizza @relation(fields: [orderPizzaId], references: [orderPizzaId])
+  topping    Topping    @relation(fields: [toppingId], references: [toppingId])
+
+  @@index([orderPizzaId], map: "OrderPizzaTopping_orderPizzaId_fkey")
+  @@index([toppingId], map: "OrderPizzaTopping_toppingId_fkey")
+}
+
+enum PizzaSize {
+  small
+  medium
+  large
+}
+
+enum PizzaBase {
+  thick
+  thin
+}
+
+enum OrderStatus {
+  new
+  in_progress
+  ready
+}
