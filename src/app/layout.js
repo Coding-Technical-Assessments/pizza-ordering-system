@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UserLayout>{children}</UserLayout>
+        <AppProvider>
+          <FeedbackComponents />
+        </AppProvider>
       </body>
     </html>
   );
