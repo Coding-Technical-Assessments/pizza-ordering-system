@@ -24,9 +24,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppProvider>
-          <FeedbackComponents />
-        </AppProvider>
+        <AuthProvider>
+          <AppProvider>
+            <FeedbackComponents />
+          </AppProvider>
+        </AuthProvider>
       </body>
     </html>
   );
