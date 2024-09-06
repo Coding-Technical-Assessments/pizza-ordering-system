@@ -10,7 +10,6 @@ import UserLayout from "@/layout/user";
 import { Box } from "@mui/material";
 import { AppProvider } from "@/context/app";
 import FeedbackComponents from "@/components/feedback";
-import { initializeAxios } from "@/config/axios";
 import { AuthProvider } from "@/context/auth";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,6 +26,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <AppProvider>
             <FeedbackComponents />
+            <UserLayout>{children}</UserLayout>
           </AppProvider>
         </AuthProvider>
       </body>
