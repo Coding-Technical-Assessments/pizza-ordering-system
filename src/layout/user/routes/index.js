@@ -10,12 +10,12 @@ export const userRoutes = [
   {
     title: "Shop",
     icon: <AddShoppingCart />,
-    path: "shop",
+    path: "/shop",
   },
   {
     title: "My Orders",
     icon: <DeliveryDining />,
-    path: "orders",
+    path: "/orders",
   },
 ];
 
@@ -23,21 +23,21 @@ export const adminRoutes = [
   {
     title: "Users",
     icon: <Group />,
-    path: "users",
+    path: "/users",
   },
   {
     title: "Orders",
     icon: <DeliveryDining />,
-    path: "orders",
+    path: "/orders",
   },
   {
     title: "Toppings",
     icon: <EmojiNature />,
-    path: "toppings",
+    path: "/toppings",
   },
   {
     title: "Pizzas",
     icon: <LocalPizza />,
-    path: "pizzas",
+    path: "/pizzas",
   },
 ];
